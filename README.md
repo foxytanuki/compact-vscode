@@ -70,7 +70,46 @@ Options: `"off"`, `"messages"`, `"verbose"`
 
 - `compact.restartLanguageServer` - Restart the Compact Language Server
 
+## Testing Locally
+
+### Method 1: Debug Mode (Recommended)
+
+1. Open this project in VS Code
+2. Press `F5` or go to Run > Start Debugging
+3. A new VS Code window will open (Extension Development Host)
+4. In the new window, open a `.compact` file to test the extension
+
+### Method 2: Install from VSIX
+
+```bash
+# Build and package
+bun run compile
+bun run build:server  # Optional: if you want to test with bundled LSP
+vsce package
+
+# Install the generated VSIX
+code --install-extension compact-vscode-0.1.0.vsix
+```
+
+### Method 3: Symlink Installation
+
+```bash
+# On Linux/macOS
+ln -s $(pwd) ~/.vscode/extensions/compact-vscode
+
+# On Windows (PowerShell)
+New-Item -ItemType SymbolicLink -Path "$env:USERPROFILE\.vscode\extensions\compact-vscode" -Target (Get-Location)
+```
+
+Then reload VS Code.
+
 ## Development
+
+### Prerequisites
+
+- [Bun](https://bun.sh/) - Package manager and runtime
+- [Rust](https://rustup.rs/) - For building the LSP server
+- [Node.js](https://nodejs.org/) - For vsce (VS Code Extension manager)
 
 ### Building
 
@@ -84,8 +123,22 @@ bun run compile
 # Build LSP server binaries (requires Rust)
 bun run build:server
 
-# Package extension
+# Package extension (requires vsce: npm install -g @vscode/vsce)
 vsce package
+```
+
+### Before Publishing
+
+Update `package.json` with your publisher information:
+
+```json
+{
+  "publisher": "your-publisher-name",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/your-username/compact-vscode.git"
+  }
+}
 ```
 
 ### Building LSP Server
