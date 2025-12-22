@@ -57,15 +57,16 @@ jobs:
               shell: bash
               run: |
                   mkdir -p server/${{ matrix.platform }}
-                  if [ "${{ runner.os }}" == "Windows" ]; then
-                      cp submodules/compact-lsp/target/${{ matrix.target }}/release/${{ matrix.binary_name }} server/${{ matrix.platform }}/${{ matrix.binary_name }}
-                  else
-                      cp submodules/compact-lsp/target/${{ matrix.target }}/release/${{ matrix.binary_name }} server/${{ matrix.platform }}/${{ matrix.binary_name }}
+                  cp submodules/compact-lsp/target/${{ matrix.target }}/release/${{ matrix.binary_name }} server/${{ matrix.platform }}/${{ matrix.binary_name }}
+                  if [ "${{ runner.os }}" != "Windows" ]; then
                       chmod +x server/${{ matrix.platform }}/${{ matrix.binary_name }}
                   fi
 
             - name: Install vsce
               run: npm install -g @vscode/vsce
+
+            - name: Create dist directory
+              run: mkdir -p dist
 
             - name: Package extension
               run: vsce package --out dist/compact-vscode-${{ runner.os }}.vsix
