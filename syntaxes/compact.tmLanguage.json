@@ -1,0 +1,143 @@
+{
+  "$schema": "https://raw.githubusercontent.com/martinring/tmlanguage/master/tmlanguage.json",
+  "name": "Compact",
+  "patterns": [
+    {
+      "include": "#comments"
+    },
+    {
+      "include": "#strings"
+    },
+    {
+      "include": "#keywords"
+    },
+    {
+      "include": "#types"
+    },
+    {
+      "include": "#literals"
+    },
+    {
+      "include": "#operators"
+    }
+  ],
+  "repository": {
+    "comments": {
+      "patterns": [
+        {
+          "name": "comment.line.double-slash.compact",
+          "match": "//.*"
+        },
+        {
+          "name": "comment.block.compact",
+          "begin": "/\\*",
+          "end": "\\*/"
+        }
+      ]
+    },
+    "strings": {
+      "patterns": [
+        {
+          "name": "string.quoted.double.compact",
+          "begin": "\"",
+          "end": "\"",
+          "patterns": [
+            {
+              "name": "constant.character.escape.compact",
+              "match": "\\\\."
+            }
+          ]
+        },
+        {
+          "name": "string.quoted.single.compact",
+          "begin": "'",
+          "end": "'",
+          "patterns": [
+            {
+              "name": "constant.character.escape.compact",
+              "match": "\\\\."
+            }
+          ]
+        }
+      ]
+    },
+    "keywords": {
+      "patterns": [
+        {
+          "name": "keyword.control.compact",
+          "match": "\\b(pragma|import|export|module|ledger|circuit|witness|contract|struct|enum|constructor|return|if|else|for|of|assert|const|default|map|fold|disclose|pad|pure|sealed|prefix|as)\\b"
+        },
+        {
+          "name": "keyword.operator.compact",
+          "match": "\\b(and|or|not)\\b"
+        }
+      ]
+    },
+    "types": {
+      "patterns": [
+        {
+          "name": "storage.type.builtin.compact",
+          "match": "\\b(Boolean|Field|Bytes|Opaque|Vector)\\b"
+        },
+        {
+          "name": "storage.type.builtin.compact",
+          "begin": "\\bUint\\b",
+          "end": "(?=\\s|;|,|\\)|\\]|\\}|$|\\n)",
+          "beginCaptures": {
+            "0": {
+              "name": "storage.type.builtin.compact"
+            }
+          },
+          "patterns": [
+            {
+              "name": "meta.type.parameters.compact",
+              "begin": "<",
+              "end": ">",
+              "beginCaptures": {
+                "0": {
+                  "name": "punctuation.definition.type.parameters.begin.compact"
+                }
+              },
+              "endCaptures": {
+                "0": {
+                  "name": "punctuation.definition.type.parameters.end.compact"
+                }
+              },
+              "patterns": [
+                {
+                  "name": "constant.numeric.compact",
+                  "match": "\\b[0-9]+\\b"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "name": "storage.type.compact",
+          "match": "\\b[A-Z][a-zA-Z0-9_]*\\b"
+        }
+      ]
+    },
+    "literals": {
+      "patterns": [
+        {
+          "name": "constant.numeric.compact",
+          "match": "\\b[0-9]+(\\.[0-9]+)?\\b"
+        },
+        {
+          "name": "constant.language.boolean.compact",
+          "match": "\\b(true|false)\\b"
+        }
+      ]
+    },
+    "operators": {
+      "patterns": [
+        {
+          "name": "keyword.operator.compact",
+          "match": "(=|\\+=|-=|==|!=|>=|<=|>|<|\\+|\\-|\\*|/|%|&&|\\|\\||=>|\\?|\\.\\.\\.|\\.\\.|:|\\.)"
+        }
+      ]
+    }
+  },
+  "scopeName": "source.compact"
+}

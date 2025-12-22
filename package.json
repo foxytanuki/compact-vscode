@@ -36,6 +36,13 @@
                 "configuration": "./language-configuration.json"
             }
         ],
+        "grammars": [
+            {
+                "language": "compact",
+                "scopeName": "source.compact",
+                "path": "./syntaxes/compact.tmLanguage.json"
+            }
+        ],
         "configuration": {
             "type": "object",
             "title": "Compact Language",
