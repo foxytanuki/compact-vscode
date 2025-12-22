@@ -18,6 +18,27 @@ const platforms = [
 const serverDir = path.join(__dirname, "..", "server");
 const lspDir = path.join(__dirname, "..", "submodules", "compact-lsp");
 
+// Check and initialize submodules if needed
+if (!fs.existsSync(lspDir) || !fs.existsSync(path.join(lspDir, "Cargo.toml"))) {
+    console.log("Initializing git submodules...");
+    try {
+        execSync("git submodule update --init --recursive", {
+            cwd: path.join(__dirname, ".."),
+            stdio: "inherit",
+        });
+    } catch (error) {
+        console.error("Failed to initialize submodules:", error.message);
+        console.error("Please run manually: git submodule update --init --recursive");
+        process.exit(1);
+    }
+    // Verify submodule was initialized
+    if (!fs.existsSync(path.join(lspDir, "Cargo.toml"))) {
+        console.error("compact-lsp submodule initialization failed. Cargo.toml not found.");
+        console.error("Please run manually: git submodule update --init --recursive");
+        process.exit(1);
+    }
+}
+
 // Create server directory structure
 platforms.forEach((platform) => {
     const platformDir = path.join(serverDir, platform.name);

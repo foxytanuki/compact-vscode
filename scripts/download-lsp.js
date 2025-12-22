@@ -122,10 +122,26 @@ async function main() {
 
                 // Try to build from submodule
                 const lspDir = path.join(__dirname, "..", "submodules", "compact-lsp");
-                if (!fs.existsSync(lspDir)) {
-                    throw new Error(
-                        "compact-lsp submodule not found. Run: git submodule update --init --recursive"
-                    );
+                if (!fs.existsSync(lspDir) || !fs.existsSync(path.join(lspDir, "Cargo.toml"))) {
+                    console.log("Initializing git submodules...");
+                    try {
+                        execSync("git submodule update --init --recursive", {
+                            cwd: path.join(__dirname, ".."),
+                            stdio: "inherit",
+                        });
+                    } catch (error) {
+                        throw new Error(
+                            `Failed to initialize submodules: ${error.message}\n` +
+                            "Please run manually: git submodule update --init --recursive"
+                        );
+                    }
+                    // Verify submodule was initialized
+                    if (!fs.existsSync(path.join(lspDir, "Cargo.toml"))) {
+                        throw new Error(
+                            "compact-lsp submodule initialization failed. Cargo.toml not found.\n" +
+                            "Please run manually: git submodule update --init --recursive"
+                        );
+                    }
                 }
 
                 // Check if Rust is installed
