@@ -3,8 +3,14 @@
     "displayName": "Compact Language Support",
     "description": "Language support for Compact smart contract language (Midnight network)",
     "version": "0.1.0",
+    "publisher": "foxytanuki",
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/foxytanuki/compact-vscode.git"
+    },
+    "license": "MIT",
     "engines": {
-        "vscode": "^1.75.0"
+        "vscode": "^1.60.0"
     },
     "categories": [
         "Programming Languages"
@@ -12,10 +18,15 @@
     "keywords": [
         "compact",
         "midnight",
+        "midnight-network",
         "smart-contract",
-        "blockchain"
+        "blockchain",
+        "vscode-extension"
     ],
     "main": "./out/extension.js",
+    "activationEvents": [
+        "onLanguage:compact"
+    ],
     "contributes": {
         "languages": [
             {
@@ -28,6 +39,13 @@
                     ".compact"
                 ],
                 "configuration": "./language-configuration.json"
+            }
+        ],
+        "grammars": [
+            {
+                "language": "compact",
+                "scopeName": "source.compact",
+                "path": "./syntaxes/compact.tmLanguage.json"
             }
         ],
         "configuration": {
@@ -53,19 +71,27 @@
         }
     },
     "scripts": {
-        "vscode:prepublish": "bun run compile",
+        "vscode:prepublish": "bun run bundle",
         "compile": "tsc -p ./",
+        "bundle": "bun run scripts/bundle.js",
         "watch": "tsc -watch -p ./",
         "pretest": "bun run compile && bun run lint",
         "lint": "biome check .",
         "lint:fix": "biome check --write .",
         "format": "biome format --write .",
-        "test": "bun run ./out/test/runTest.js"
+        "test": "bun run ./out/test/runTest.js",
+        "build:server": "node scripts/build-server.js",
+        "build:server:linux": "cd submodules/compact-lsp && cargo build --release && cp target/release/compact-lsp ../server/linux/compact-lsp",
+        "build:server:darwin": "cd submodules/compact-lsp && cargo build --release && cp target/release/compact-lsp ../server/darwin/compact-lsp",
+        "build:server:win32": "cd submodules/compact-lsp && cargo build --release && cp target/release/compact-lsp.exe ../server/win32/compact-lsp.exe",
+        "dev:setup": "git submodule update --init --recursive && bun run compile && node scripts/download-lsp.js",
+        "dev:test": "bun run dev:setup && code --extensionDevelopmentPath=$(pwd)"
     },
     "devDependencies": {
         "@biomejs/biome": "latest",
         "@types/node": "^25.0.3",
-        "@types/vscode": "^1.107.0",
+        "@types/vscode": "^1.60.0",
+        "esbuild": "^0.27.2",
         "typescript": "^5.9.3"
     },
     "dependencies": {
