@@ -12,13 +12,36 @@ Language support for the [Compact](https://docs.midnight.network/develop/referen
 
 ## Installation
 
-Install from VS Code Marketplace or VSIX:
+### From GitHub Releases (Recommended)
 
+1. Go to [Releases](https://github.com/foxytanuki/compact-vscode/releases)
+2. Download the VSIX file for your platform:
+   - `compact-vscode-linux.vsix` - Linux (x86_64)
+   - `compact-vscode-darwin.vsix` - macOS (Intel)
+   - `compact-vscode-darwin-arm64.vsix` - macOS (Apple Silicon)
+   - `compact-vscode-win32.vsix` - Windows (x86_64)
+3. Install the extension:
+
+**VS Code:**
 ```bash
-code --install-extension compact-vscode-0.1.0.vsix
+code --install-extension compact-vscode-<platform>.vsix
 ```
 
-The extension includes pre-built LSP server binaries. No manual installation required.
+**Cursor:**
+```bash
+cursor --install-extension compact-vscode-<platform>.vsix
+```
+
+Or via UI:
+- Open Extensions view (`Ctrl+Shift+X` / `Cmd+Shift+X`)
+- Click `...` menu → "Install from VSIX..."
+- Select the downloaded VSIX file
+
+### From VS Code Marketplace
+
+Coming soon - the extension will be available on the VS Code Marketplace.
+
+The extension includes pre-built LSP server binaries for all platforms. No manual installation required.
 
 ## Configuration
 
@@ -60,8 +83,10 @@ Press `F5` in VS Code to start debugging.
 ```bash
 bun run compile
 bun run build:server  # Build LSP server binaries
-vsce package
+vsce package --no-dependencies
 ```
+
+**Note:** The `--no-dependencies` flag is required when using Bun, as `vsce` expects npm's dependency structure.
 
 ## Related Projects
 
