@@ -27,12 +27,20 @@ export async function activate(context: vscode.ExtensionContext) {
         // 2. Common installation locations
         // 3. PATH
 
-        // Get platform-specific binary name
+        // Get platform-specific binary name and architecture
         const platform = process.platform;
         const binaryName = platform === "win32" ? "compact-lsp.exe" : "compact-lsp";
 
+        // Determine architecture-specific path for macOS
+        let serverDir: string = platform;
+        if (platform === "darwin") {
+            // Check CPU architecture (arm64 for Apple Silicon, x64 for Intel)
+            const arch = process.arch;
+            serverDir = arch === "arm64" ? "darwin-arm64" : "darwin";
+        }
+
         // Try bundled server first
-        const bundledPath = context.asAbsolutePath(path.join("server", platform, binaryName));
+        const bundledPath = context.asAbsolutePath(path.join("server", serverDir, binaryName));
 
         const homeDir = process.env.HOME || process.env.USERPROFILE || "";
         const possiblePaths = [

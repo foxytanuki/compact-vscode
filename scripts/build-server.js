@@ -11,6 +11,7 @@ const path = require("node:path");
 const platforms = [
     { name: "linux", target: "x86_64-unknown-linux-gnu" },
     { name: "darwin", target: "x86_64-apple-darwin" },
+    { name: "darwin-arm64", target: "aarch64-apple-darwin" },
     { name: "win32", target: "x86_64-pc-windows-msvc", ext: ".exe" },
 ];
 
