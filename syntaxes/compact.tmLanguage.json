@@ -121,8 +121,30 @@
         "keywords": {
             "patterns": [
                 {
+                    "name": "meta.pragma.compact",
+                    "begin": "\\bpragma\\b",
+                    "end": ";",
+                    "beginCaptures": {
+                        "0": {
+                            "name": "keyword.control.compact"
+                        }
+                    },
+                    "patterns": [
+                        {
+                            "name": "variable.other.property.compact",
+                            "match": "\\b[a-z][a-zA-Z0-9_]*\\b"
+                        },
+                        {
+                            "include": "#operators"
+                        },
+                        {
+                            "include": "#literals"
+                        }
+                    ]
+                },
+                {
                     "name": "keyword.control.compact",
-                    "match": "\\b(pragma|import|export|module|ledger|circuit|witness|contract|struct|enum|constructor|assert|const|default|map|fold|disclose|pad|prefix|as)\\b"
+                    "match": "\\b(import|export|module|ledger|circuit|witness|contract|struct|enum|constructor|assert|const|default|map|fold|disclose|pad|prefix|as)\\b"
                 },
                 {
                     "name": "keyword.control.conditional.compact",
