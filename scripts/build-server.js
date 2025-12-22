@@ -35,6 +35,40 @@ try {
     process.exit(0);
 }
 
+// Check if rustup is available
+let rustupAvailable = false;
+try {
+    execSync("rustup --version", { stdio: "ignore" });
+    rustupAvailable = true;
+} catch {
+    console.warn("Warning: rustup not found. Cannot install cross-compilation targets.");
+}
+
+// Helper function to check if a target is installed
+function isTargetInstalled(target) {
+    try {
+        const output = execSync("rustup target list --installed", { encoding: "utf-8" });
+        return output.split("\n").includes(target);
+    } catch {
+        return false;
+    }
+}
+
+// Helper function to install a target
+function installTarget(target) {
+    if (!rustupAvailable) {
+        return false;
+    }
+    try {
+        console.log(`Installing target ${target}...`);
+        execSync(`rustup target add ${target}`, { stdio: "inherit" });
+        return true;
+    } catch (error) {
+        console.warn(`Failed to install target ${target}:`, error.message);
+        return false;
+    }
+}
+
 // Build for each platform
 console.log("Building compact-lsp server...");
 platforms.forEach((platform) => {
@@ -45,6 +79,16 @@ platforms.forEach((platform) => {
 
         // Build using cross-compilation if needed
         if (platform.target) {
+            // Check if target is installed, install if not
+            if (!isTargetInstalled(platform.target)) {
+                console.log(`Target ${platform.target} is not installed. Attempting to install...`);
+                if (!installTarget(platform.target)) {
+                    console.warn(`⚠ Skipping ${platform.name}: Could not install target ${platform.target}`);
+                    console.warn(`  You can manually install it with: rustup target add ${platform.target}`);
+                    return;
+                }
+            }
+
             execSync(`cargo build --release --target ${platform.target}`, {
                 cwd: lspDir,
                 stdio: "inherit",
