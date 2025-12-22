@@ -41,8 +41,16 @@ Optional: Set custom LSP server path:
 ### Setup
 
 ```bash
+# Clone with submodules (recommended)
+git clone --recursive https://github.com/foxytanuki/compact-vscode.git
+cd compact-vscode
+
+# Or if already cloned, initialize submodules
+git submodule update --init --recursive
+
+# Install dependencies and setup
 bun install
-bun run dev:setup  # Downloads compact-lsp and compiles extension
+bun run dev:setup  # Initializes submodules, downloads compact-lsp, and compiles extension
 ```
 
 Press `F5` in VS Code to start debugging.
