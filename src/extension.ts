@@ -9,7 +9,7 @@ import {
 
 let client: LanguageClient;
 
-export function activate(context: vscode.ExtensionContext) {
+export async function activate(context: vscode.ExtensionContext) {
     // Get configuration
     const config = vscode.workspace.getConfiguration("compact");
     const lspPath = config.get<string>("lsp.path", "");
@@ -74,7 +74,7 @@ export function activate(context: vscode.ExtensionContext) {
         outputChannel: vscode.window.createOutputChannel("Compact Language Server"),
     };
 
-    // Create the language client and start the client
+    // Create the language client
     client = new LanguageClient(
         "compactLanguageServer",
         "Compact Language Server",
@@ -83,24 +83,37 @@ export function activate(context: vscode.ExtensionContext) {
     );
 
     // Start the client. This will also launch the server
-    client.start();
+    try {
+        await client.start();
+    } catch (error) {
+        vscode.window.showErrorMessage(`Failed to start Compact Language Server: ${error}`);
+        return;
+    }
 
     // Register command to restart the language server
     const restartCommand = vscode.commands.registerCommand(
         "compact.restartLanguageServer",
         async () => {
             await client.stop();
-            client.start();
-            vscode.window.showInformationMessage("Compact Language Server restarted");
+            try {
+                await client.start();
+                vscode.window.showInformationMessage("Compact Language Server restarted");
+            } catch (error) {
+                vscode.window.showErrorMessage(
+                    `Failed to restart Compact Language Server: ${error}`
+                );
+            }
         }
     );
 
+    // Register client for automatic disposal
+    context.subscriptions.push(client);
     context.subscriptions.push(restartCommand);
 }
 
-export function deactivate(): vscode.ProviderResult<void> {
+export async function deactivate(): Promise<void> {
     if (!client) {
-        return undefined;
+        return;
     }
-    return client.stop();
+    await client.stop();
 }
