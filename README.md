@@ -72,16 +72,37 @@ Options: `"off"`, `"messages"`, `"verbose"`
 
 ## Testing Locally
 
-### Method 1: Debug Mode (Recommended)
+### Quick Start (Recommended)
 
-1. Open this project in VS Code
-2. Press `F5` or go to Run > Start Debugging
-3. A new VS Code window will open (Extension Development Host)
-4. In the new window, open a `.compact` file to test the extension
+```bash
+# Download compact-lsp and compile extension
+bun run dev:setup
+
+# Then press F5 in VS Code to start debugging
+```
+
+This will:
+1. Compile the TypeScript extension
+2. Try to download the latest `compact-lsp` binary from GitHub Releases
+3. If no release exists, build from the submodule source (requires Rust)
+4. Place the binary in `bin/` for testing
+
+### Method 1: Debug Mode
+
+1. Run `bun run dev:setup` to download compact-lsp (first time only)
+2. Open this project in VS Code
+3. Press `F5` or go to Run > Start Debugging
+4. A new VS Code window will open (Extension Development Host)
+5. In the new window, open a `.compact` file to test the extension
+
+**Note:** The downloaded `compact-lsp` will be automatically detected. If you want to use a specific path, set `compact.lsp.path` in VS Code settings.
 
 ### Method 2: Install from VSIX
 
 ```bash
+# Download compact-lsp for testing
+bun run dev:setup
+
 # Build and package
 bun run compile
 bun run build:server  # Optional: if you want to test with bundled LSP
@@ -90,6 +111,41 @@ vsce package
 # Install the generated VSIX
 code --install-extension compact-vscode-0.1.0.vsix
 ```
+
+### Download compact-lsp Manually
+
+If you prefer to download compact-lsp manually:
+
+```bash
+# Download latest release for your platform
+node scripts/download-lsp.js
+
+# The binary will be placed in bin/compact-lsp (or bin/compact-lsp.exe on Windows)
+# The extension will automatically detect it, or you can set compact.lsp.path in VS Code settings
+```
+
+### Development Workflow
+
+1. **First time setup:**
+   ```bash
+   bun install
+   bun run dev:setup  # Downloads compact-lsp and compiles extension
+   ```
+
+2. **Start debugging:**
+   - Press `F5` in VS Code
+   - Or run: `bun run dev:test` (opens Extension Development Host)
+
+3. **Test the extension:**
+   - In the Extension Development Host window, open a `.compact` file
+   - LSP features should work automatically (the downloaded binary in `bin/` will be used)
+
+4. **Update compact-lsp:**
+   ```bash
+   # Delete old binary and re-download
+   rm -rf bin/
+   bun run dev:setup
+   ```
 
 ### Method 3: Symlink Installation
 

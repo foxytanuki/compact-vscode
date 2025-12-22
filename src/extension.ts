@@ -43,8 +43,11 @@ export async function activate(context: vscode.ExtensionContext) {
         const bundledPath = context.asAbsolutePath(path.join("server", serverDir, binaryName));
 
         const homeDir = process.env.HOME || process.env.USERPROFILE || "";
+        // Development binary (downloaded by dev:setup script)
+        const devBinaryPath = context.asAbsolutePath(path.join("bin", binaryName));
         const possiblePaths = [
             bundledPath, // Bundled server (highest priority after config)
+            devBinaryPath, // Development binary (downloaded by dev:setup)
             path.join(homeDir, "compactc", "compact-lsp"),
             path.join(homeDir, ".cargo", "bin", "compact-lsp"),
             "compact-lsp", // Try PATH

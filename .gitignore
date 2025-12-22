@@ -4,6 +4,7 @@ node_modules
 *.vsix
 bun.lockb
 dist
+bin
 # VSCode settings (keep launch.json and tasks.json)
 .vscode/settings.json
 .vscode/extensions.json
