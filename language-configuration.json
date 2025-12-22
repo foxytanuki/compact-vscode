@@ -13,9 +13,51 @@
         { "open": "'", "close": "'" }
     ],
     "surroundingPairs": [["{", "}"], ["[", "]"], ["(", ")"], ["<", ">"], ["\"", "\""], ["'", "'"]],
-    "indentationRules": {
-        "increaseIndentPattern": "^((?!.*?/\\*).*)*\\{[^}]*$",
-        "decreaseIndentPattern": "^((?!.*?/\\*).*)*\\}[^}]*$"
+    "folding": {
+        "markers": {
+            "start": "^\\s*//\\s*#?region\\b",
+            "end": "^\\s*//\\s*#?endregion\\b"
+        }
     },
-    "wordPattern": "(-?\\d*\\.\\d\\w*)|([^\\`\\~\\!\\@\\#\\%\\^\\&\\*\\(\\)\\-\\=\\+\\[\\{\\]\\}\\\\\\|\\;\\:\\'\\\"\\,\\.\\<\\>\\/\\?\\s]+)"
+    "indentationRules": {
+        "increaseIndentPattern": "^((?!.*?/\\*).*)*\\{[^}]*$|^((?!.*?/\\*).*)*\\[[^\\]]*$|^((?!.*?/\\*).*)*\\([^)]*$|^\\s*(else|elseif|catch|finally)\\b",
+        "decreaseIndentPattern": "^((?!.*?/\\*).*)*\\}[^}]*$|^((?!.*?/\\*).*)*\\][^\\]]*$|^((?!.*?/\\*).*)*\\)[^)]*$|^\\s*(else|elseif|catch|finally)\\b"
+    },
+    "wordPattern": "(-?\\d*\\.\\d\\w*)|([^\\`\\~\\!\\@\\#\\%\\^\\&\\*\\(\\)\\-\\=\\+\\[\\{\\]\\}\\\\\\|\\;\\:\\'\\\"\\,\\.\\<\\>\\/\\?\\s]+)",
+    "onEnterRules": [
+        {
+            "beforeText": "^\\s*//.*",
+            "action": {
+                "indent": "none",
+                "appendText": "// "
+            }
+        },
+        {
+            "beforeText": "^\\s*\\{",
+            "afterText": "^\\s*\\}",
+            "action": {
+                "indent": "indent",
+                "indentAction": "indentOutdent",
+                "appendText": "    "
+            }
+        },
+        {
+            "beforeText": "^\\s*\\[",
+            "afterText": "^\\s*\\]",
+            "action": {
+                "indent": "indent",
+                "indentAction": "indentOutdent",
+                "appendText": "    "
+            }
+        },
+        {
+            "beforeText": "^\\s*\\(",
+            "afterText": "^\\s*\\)",
+            "action": {
+                "indent": "indent",
+                "indentAction": "indentOutdent",
+                "appendText": "    "
+            }
+        }
+    ]
 }
