@@ -3,7 +3,12 @@ node_modules
 .vscode-test
 *.vsix
 bun.lockb
+dist
+# VSCode settings (keep launch.json and tasks.json)
+.vscode/settings.json
+.vscode/extensions.json
 # Server binaries (will be built by CI/CD)
 server/*/compact-lsp
 server/*/compact-lsp.exe
+server/darwin-arm64/**
 
