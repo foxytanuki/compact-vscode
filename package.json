@@ -2,7 +2,7 @@
     "name": "compact-vscode",
     "displayName": "Compact Language Support",
     "description": "Language support for Compact smart contract language (Midnight network)",
-    "version": "0.1.0",
+    "version": "0.0.1",
     "publisher": "foxytanuki",
     "repository": {
         "type": "git",
