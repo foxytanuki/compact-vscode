@@ -11,7 +11,7 @@ jobs:
         name: Lint and Compile
         runs-on: ubuntu-latest
         steps:
-            - uses: actions/checkout@v4
+            - uses: actions/checkout@v6
               with:
                   submodules: recursive
 
@@ -51,7 +51,7 @@ jobs:
                       platform: win32
                       binary_name: compact-lsp.exe
         steps:
-            - uses: actions/checkout@v4
+            - uses: actions/checkout@v6
               with:
                   submodules: recursive
 
