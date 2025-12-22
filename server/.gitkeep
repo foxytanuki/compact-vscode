@@ -1,0 +1,6 @@
+# Server binaries directory
+# Platform-specific compact-lsp binaries will be placed here:
+# - linux/compact-lsp
+# - darwin/compact-lsp
+# - win32/compact-lsp.exe
+
