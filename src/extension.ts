@@ -18,26 +18,37 @@ export async function activate(context: vscode.ExtensionContext) {
     // Determine LSP server path
     let serverModule: string;
     if (lspPath && lspPath.trim() !== "") {
-        // Use configured path
+        // Use configured path (highest priority)
         serverModule = lspPath;
     } else {
-        // Try to find compact-lsp automatically
-        // Check common locations
+        const fs = require("node:fs");
+        // Priority order:
+        // 1. Bundled server (in extension directory)
+        // 2. Common installation locations
+        // 3. PATH
+
+        // Get platform-specific binary name
+        const platform = process.platform;
+        const binaryName = platform === "win32" ? "compact-lsp.exe" : "compact-lsp";
+
+        // Try bundled server first
+        const bundledPath = context.asAbsolutePath(path.join("server", platform, binaryName));
+
         const homeDir = process.env.HOME || process.env.USERPROFILE || "";
         const possiblePaths = [
+            bundledPath, // Bundled server (highest priority after config)
             path.join(homeDir, "compactc", "compact-lsp"),
             path.join(homeDir, ".cargo", "bin", "compact-lsp"),
             "compact-lsp", // Try PATH
         ];
 
-        // Find first existing path or use the last one (will try PATH)
+        // Find first existing path
         serverModule =
             possiblePaths.find((p) => {
                 if (p === "compact-lsp") {
                     return true; // Always try PATH
                 }
                 try {
-                    const fs = require("node:fs");
                     return fs.existsSync(p);
                 } catch {
                     return false;

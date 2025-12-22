@@ -3,4 +3,7 @@ node_modules
 .vscode-test
 *.vsix
 bun.lockb
+# Server binaries (will be built by CI/CD)
+server/*/compact-lsp
+server/*/compact-lsp.exe
 
