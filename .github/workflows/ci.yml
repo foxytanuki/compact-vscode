@@ -1,0 +1,100 @@
+name: CI
+
+on:
+    push:
+        branches: [main, develop]
+    pull_request:
+        branches: [main, develop]
+
+jobs:
+    lint-and-compile:
+        name: Lint and Compile
+        runs-on: ubuntu-latest
+        steps:
+            - uses: actions/checkout@v4
+              with:
+                  submodules: recursive
+
+            - uses: oven-sh/setup-bun@v2
+              with:
+                  bun-version: latest
+
+            - name: Install dependencies
+              run: bun install
+
+            - name: Lint
+              run: bun run lint
+
+            - name: Compile
+              run: bun run compile
+
+    build-and-package:
+        name: Build and Package
+        runs-on: ${{ matrix.os }}
+        strategy:
+            matrix:
+                include:
+                    - os: ubuntu-latest
+                      target: x86_64-unknown-linux-gnu
+                      platform: linux
+                      binary_name: compact-lsp
+                    - os: macos-latest
+                      target: x86_64-apple-darwin
+                      platform: darwin
+                      binary_name: compact-lsp
+                    - os: macos-latest
+                      target: aarch64-apple-darwin
+                      platform: darwin-arm64
+                      binary_name: compact-lsp
+                    - os: windows-latest
+                      target: x86_64-pc-windows-msvc
+                      platform: win32
+                      binary_name: compact-lsp.exe
+        steps:
+            - uses: actions/checkout@v4
+              with:
+                  submodules: recursive
+
+            - uses: oven-sh/setup-bun@v2
+              with:
+                  bun-version: latest
+
+            - name: Install Rust
+              uses: dtolnay/rust-toolchain@stable
+              with:
+                  targets: ${{ matrix.target }}
+
+            - name: Install dependencies
+              run: bun install
+
+            - name: Compile TypeScript
+              run: bun run compile
+
+            - name: Build LSP server
+              run: |
+                  cd submodules/compact-lsp
+                  cargo build --release --target ${{ matrix.target }}
+
+            - name: Copy LSP binary
+              shell: bash
+              run: |
+                  mkdir -p server/${{ matrix.platform }}
+                  if [ "${{ runner.os }}" == "Windows" ]; then
+                      cp submodules/compact-lsp/target/${{ matrix.target }}/release/${{ matrix.binary_name }} server/${{ matrix.platform }}/${{ matrix.binary_name }}
+                  else
+                      cp submodules/compact-lsp/target/${{ matrix.target }}/release/${{ matrix.binary_name }} server/${{ matrix.platform }}/${{ matrix.binary_name }}
+                      chmod +x server/${{ matrix.platform }}/${{ matrix.binary_name }}
+                  fi
+
+            - name: Install vsce
+              run: npm install -g @vscode/vsce
+
+            - name: Package extension
+              run: vsce package --out dist/compact-vscode-${{ runner.os }}-${{ github.sha }}.vsix
+
+            - name: Upload artifact
+              uses: actions/upload-artifact@v4
+              with:
+                  name: extension-${{ runner.os }}
+                  path: dist/*.vsix
+
