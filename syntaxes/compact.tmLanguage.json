@@ -19,6 +19,9 @@
     },
     {
       "include": "#operators"
+    },
+    {
+      "include": "#punctuation"
     }
   ],
   "repository": {
@@ -26,12 +29,28 @@
       "patterns": [
         {
           "name": "comment.line.double-slash.compact",
-          "match": "//.*"
+          "begin": "//",
+          "end": "$",
+          "beginCaptures": {
+            "0": {
+              "name": "punctuation.definition.comment.compact"
+            }
+          }
         },
         {
           "name": "comment.block.compact",
           "begin": "/\\*",
-          "end": "\\*/"
+          "end": "\\*/",
+          "beginCaptures": {
+            "0": {
+              "name": "punctuation.definition.comment.begin.compact"
+            }
+          },
+          "endCaptures": {
+            "0": {
+              "name": "punctuation.definition.comment.end.compact"
+            }
+          }
         }
       ]
     },
@@ -41,6 +60,16 @@
           "name": "string.quoted.double.compact",
           "begin": "\"",
           "end": "\"",
+          "beginCaptures": {
+            "0": {
+              "name": "punctuation.definition.string.begin.compact"
+            }
+          },
+          "endCaptures": {
+            "0": {
+              "name": "punctuation.definition.string.end.compact"
+            }
+          },
           "patterns": [
             {
               "name": "constant.character.escape.compact",
@@ -52,12 +81,37 @@
           "name": "string.quoted.single.compact",
           "begin": "'",
           "end": "'",
+          "beginCaptures": {
+            "0": {
+              "name": "punctuation.definition.string.begin.compact"
+            }
+          },
+          "endCaptures": {
+            "0": {
+              "name": "punctuation.definition.string.end.compact"
+            }
+          },
           "patterns": [
             {
               "name": "constant.character.escape.compact",
               "match": "\\\\."
             }
           ]
+        },
+        {
+          "name": "string.quoted.other.compact",
+          "begin": "<",
+          "end": ">",
+          "beginCaptures": {
+            "0": {
+              "name": "punctuation.definition.string.begin.compact"
+            }
+          },
+          "endCaptures": {
+            "0": {
+              "name": "punctuation.definition.string.end.compact"
+            }
+          }
         }
       ]
     },
@@ -65,10 +119,26 @@
       "patterns": [
         {
           "name": "keyword.control.compact",
-          "match": "\\b(pragma|import|export|module|ledger|circuit|witness|contract|struct|enum|constructor|return|if|else|for|of|assert|const|default|map|fold|disclose|pad|pure|sealed|prefix|as)\\b"
+          "match": "\\b(pragma|import|export|module|ledger|circuit|witness|contract|struct|enum|constructor|assert|const|default|map|fold|disclose|pad|prefix|as)\\b"
         },
         {
-          "name": "keyword.operator.compact",
+          "name": "keyword.control.conditional.compact",
+          "match": "\\b(if|else)\\b"
+        },
+        {
+          "name": "keyword.control.repeat.compact",
+          "match": "\\b(for|of)\\b"
+        },
+        {
+          "name": "keyword.control.return.compact",
+          "match": "\\breturn\\b"
+        },
+        {
+          "name": "storage.modifier.compact",
+          "match": "\\b(pure|sealed)\\b"
+        },
+        {
+          "name": "keyword.operator.word.compact",
           "match": "\\b(and|or|not)\\b"
         }
       ]
@@ -105,8 +175,10 @@
               },
               "patterns": [
                 {
-                  "name": "constant.numeric.compact",
-                  "match": "\\b[0-9]+\\b"
+                  "include": "#literals"
+                },
+                {
+                  "include": "#punctuation"
                 }
               ]
             }
@@ -121,20 +193,72 @@
     "literals": {
       "patterns": [
         {
-          "name": "constant.numeric.compact",
+          "name": "constant.numeric.decimal.compact",
           "match": "\\b[0-9]+(\\.[0-9]+)?\\b"
         },
         {
-          "name": "constant.language.boolean.compact",
-          "match": "\\b(true|false)\\b"
+          "name": "constant.numeric.hex.compact",
+          "match": "\\b0x[0-9a-fA-F]+\\b"
+        },
+        {
+          "name": "constant.numeric.version.compact",
+          "match": "\\b[0-9]+\\.[0-9]+(\\.[0-9]+)*\\b"
+        },
+        {
+          "name": "constant.language.boolean.true.compact",
+          "match": "\\btrue\\b"
+        },
+        {
+          "name": "constant.language.boolean.false.compact",
+          "match": "\\bfalse\\b"
         }
       ]
     },
     "operators": {
       "patterns": [
         {
-          "name": "keyword.operator.compact",
-          "match": "(=|\\+=|-=|==|!=|>=|<=|>|<|\\+|\\-|\\*|/|%|&&|\\|\\||=>|\\?|\\.\\.\\.|\\.\\.|:|\\.)"
+          "name": "keyword.operator.assignment.compact",
+          "match": "(=|\\+=|-=)"
+        },
+        {
+          "name": "keyword.operator.comparison.compact",
+          "match": "(==|!=|>=|<=|>|<)"
+        },
+        {
+          "name": "keyword.operator.arithmetic.compact",
+          "match": "(\\+|\\-|\\*|/|%)"
+        },
+        {
+          "name": "keyword.operator.logical.compact",
+          "match": "(&&|\\|\\|)"
+        },
+        {
+          "name": "keyword.operator.other.compact",
+          "match": "(=>|\\?|\\.\\.\\.|\\.\\.|:|\\.)"
+        }
+      ]
+    },
+    "punctuation": {
+      "patterns": [
+        {
+          "name": "punctuation.terminator.statement.compact",
+          "match": ";"
+        },
+        {
+          "name": "punctuation.separator.compact",
+          "match": ","
+        },
+        {
+          "name": "punctuation.bracket.round.compact",
+          "match": "[()]"
+        },
+        {
+          "name": "punctuation.bracket.square.compact",
+          "match": "[\\[\\]]"
+        },
+        {
+          "name": "punctuation.bracket.curly.compact",
+          "match": "[{}]"
         }
       ]
     }
