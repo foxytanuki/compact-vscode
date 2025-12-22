@@ -2,6 +2,7 @@
 .vscode-test/**
 src/**
 .gitignore
+.gitmodules
 .yarnrc
 vsc-extension-quickstart.md
 **/tsconfig.json
@@ -15,4 +16,9 @@ dist/**
 node_modules/**
 out/test/**
 *.vsix
+biome.json
+bun.lock
+mise.toml
+bin/**
+out/*.compact
 
