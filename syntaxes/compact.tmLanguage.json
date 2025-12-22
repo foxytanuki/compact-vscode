@@ -15,6 +15,9 @@
             "include": "#types"
         },
         {
+            "include": "#identifiers"
+        },
+        {
             "include": "#literals"
         },
         {
@@ -190,19 +193,27 @@
                 }
             ]
         },
+        "identifiers": {
+            "patterns": [
+                {
+                    "name": "variable.other.readwrite.compact",
+                    "match": "\\b[a-z][a-zA-Z0-9_]*\\b"
+                }
+            ]
+        },
         "literals": {
             "patterns": [
                 {
-                    "name": "constant.numeric.decimal.compact",
-                    "match": "\\b[0-9]+(\\.[0-9]+)?\\b"
+                    "name": "constant.numeric.version.compact",
+                    "match": "\\b[0-9]+\\.[0-9]+(\\.[0-9]+)*\\b"
                 },
                 {
                     "name": "constant.numeric.hex.compact",
                     "match": "\\b0x[0-9a-fA-F]+\\b"
                 },
                 {
-                    "name": "constant.numeric.version.compact",
-                    "match": "\\b[0-9]+\\.[0-9]+(\\.[0-9]+)*\\b"
+                    "name": "constant.numeric.decimal.compact",
+                    "match": "\\b[0-9]+(\\.[0-9]+)?\\b"
                 },
                 {
                     "name": "constant.language.boolean.true.compact",
