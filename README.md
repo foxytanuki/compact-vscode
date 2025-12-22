@@ -2,6 +2,8 @@
 
 Language support for the [Compact](https://docs.midnight.network/develop/reference/compact/lang-ref) smart contract language (Midnight network).
 
+> **Note:** This extension is currently under active development. Pull requests and issues are welcome!
+
 ## Features
 
 - Full LSP support via [compact-lsp](https://github.com/1NickPappas/compact-lsp)
