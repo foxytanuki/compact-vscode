@@ -18,8 +18,10 @@
     "keywords": [
         "compact",
         "midnight",
+        "midnight-network",
         "smart-contract",
-        "blockchain"
+        "blockchain",
+        "vscode-extension"
     ],
     "main": "./out/extension.js",
     "contributes": {
