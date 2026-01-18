@@ -3,4 +3,4 @@
 	url = https://github.com/1NickPappas/compact.vim
 [submodule "submodules/compact-tree-sitter"]
 	path = submodules/compact-tree-sitter
-	url = https://github.com/midnightntwrk/compact-tree-sitter
+	url = https://github.com/foxytanuki/compact-tree-sitter
