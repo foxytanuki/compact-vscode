@@ -13,13 +13,11 @@ export async function initializeParser(
 	const wasmPath = context.asAbsolutePath(
 		path.join("parsers", "tree-sitter-compact.wasm")
 	);
-	console.log("[Compact] WASM path:", wasmPath);
 
 	// Load tree-sitter WASM binary and pass it directly
 	const treeSitterWasmPath = context.asAbsolutePath(
 		path.join("parsers", "web-tree-sitter.wasm")
 	);
-	console.log("[Compact] Tree-sitter WASM path:", treeSitterWasmPath);
 
 	const treeSitterWasm = await fs.readFile(treeSitterWasmPath);
 	await TreeSitter.Parser.init({

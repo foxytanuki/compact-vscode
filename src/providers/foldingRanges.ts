@@ -17,8 +17,13 @@ const foldableNodeTypes = new Set([
 
 function collectFoldingRanges(
 	node: TreeSitter.Node,
-	ranges: vscode.FoldingRange[]
+	ranges: vscode.FoldingRange[],
+	token: vscode.CancellationToken
 ): void {
+	if (token.isCancellationRequested) {
+		return;
+	}
+
 	// Check if this node type is foldable
 	if (foldableNodeTypes.has(node.type)) {
 		const startLine = node.startPosition.row;
@@ -30,15 +35,9 @@ function collectFoldingRanges(
 		}
 	}
 
-	// Also handle comment blocks (consecutive line comments)
-	if (node.type === "comment") {
-		// Comments are handled separately as consecutive comment grouping
-		// For now, just fold individual block comments if they exist
-	}
-
 	// Recurse into children
 	for (const child of node.children) {
-		collectFoldingRanges(child, ranges);
+		collectFoldingRanges(child, ranges, token);
 	}
 }
 
@@ -46,7 +45,7 @@ export class CompactFoldingRangeProvider implements vscode.FoldingRangeProvider 
 	provideFoldingRanges(
 		document: vscode.TextDocument,
 		_context: vscode.FoldingContext,
-		_token: vscode.CancellationToken
+		token: vscode.CancellationToken
 	): vscode.ProviderResult<vscode.FoldingRange[]> {
 		const tree = getOrParseDocument(document);
 		if (!tree) {
@@ -54,7 +53,7 @@ export class CompactFoldingRangeProvider implements vscode.FoldingRangeProvider 
 		}
 
 		const ranges: vscode.FoldingRange[] = [];
-		collectFoldingRanges(tree.rootNode, ranges);
+		collectFoldingRanges(tree.rootNode, ranges, token);
 
 		return ranges;
 	}

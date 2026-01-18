@@ -93,8 +93,13 @@ function createDocumentSymbol(
 
 function collectSymbols(
 	node: TreeSitter.Node,
-	document: vscode.TextDocument
+	document: vscode.TextDocument,
+	token: vscode.CancellationToken
 ): vscode.DocumentSymbol[] {
+	if (token.isCancellationRequested) {
+		return [];
+	}
+
 	const symbols: vscode.DocumentSymbol[] = [];
 
 	// Check if current node is a symbol-producing node
@@ -104,7 +109,7 @@ function collectSymbols(
 		// For modules and contracts, collect nested symbols
 		if (node.type === "mdefn" || node.type === "ecdecl") {
 			for (const child of node.children) {
-				const childSymbols = collectSymbols(child, document);
+				const childSymbols = collectSymbols(child, document, token);
 				children.push(...childSymbols);
 			}
 		}
@@ -116,7 +121,7 @@ function collectSymbols(
 	} else {
 		// Recurse into children
 		for (const child of node.children) {
-			const childSymbols = collectSymbols(child, document);
+			const childSymbols = collectSymbols(child, document, token);
 			symbols.push(...childSymbols);
 		}
 	}
@@ -129,21 +134,13 @@ export class CompactDocumentSymbolProvider
 {
 	provideDocumentSymbols(
 		document: vscode.TextDocument,
-		_token: vscode.CancellationToken
+		token: vscode.CancellationToken
 	): vscode.ProviderResult<vscode.DocumentSymbol[]> {
 		const tree = getOrParseDocument(document);
 		if (!tree) {
-			console.log("[CompactDocumentSymbolProvider] No tree available");
 			return [];
 		}
 
-		// Debug: log top-level node types
-		console.log("[CompactDocumentSymbolProvider] Root node type:", tree.rootNode.type);
-		console.log("[CompactDocumentSymbolProvider] Children types:",
-			tree.rootNode.children.map(c => c.type).join(", "));
-
-		const symbols = collectSymbols(tree.rootNode, document);
-		console.log("[CompactDocumentSymbolProvider] Found symbols:", symbols.length);
-		return symbols;
+		return collectSymbols(tree.rootNode, document, token);
 	}
 }

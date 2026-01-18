@@ -9,11 +9,8 @@ export async function activate(
 	context: vscode.ExtensionContext
 ): Promise<void> {
 	try {
-		console.log("[Compact] Activating extension...");
-
 		// Initialize tree-sitter parser
 		await initializeParser(context);
-		console.log("[Compact] Parser initialized");
 
 		const documentSelector: vscode.DocumentSelector = {
 			language: COMPACT_LANGUAGE_ID,
@@ -54,7 +51,6 @@ export async function activate(
 			})
 		);
 
-		console.log("[Compact] Extension activated successfully");
 	} catch (error) {
 		console.error("[Compact] Activation failed:", error);
 		vscode.window.showErrorMessage(
