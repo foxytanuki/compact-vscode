@@ -71,6 +71,11 @@ jobs:
               run: bun run compile
 
             - name: Build LSP server
+              if: |
+                (matrix.target == 'x86_64-unknown-linux-gnu' && runner.os == 'Linux') ||
+                (matrix.target == 'x86_64-apple-darwin' && runner.os == 'macOS') ||
+                (matrix.target == 'aarch64-apple-darwin' && runner.os == 'macOS') ||
+                (matrix.target == 'x86_64-pc-windows-msvc' && runner.os == 'Windows')
               run: |
                   cd submodules/compact-lsp
                   cargo build --release --target ${{ matrix.target }}
@@ -94,8 +99,8 @@ jobs:
               run: vsce package --out dist/compact-vscode-${{ runner.os }}-${{ github.sha }}.vsix
 
             - name: Upload artifact
-              uses: actions/upload-artifact@v4
+              uses: actions/upload-artifact@v6
               with:
-                  name: extension-${{ runner.os }}
+                  name: extension-${{ matrix.platform }}
                   path: dist/*.vsix
 

@@ -24,6 +24,9 @@
         "vscode-extension"
     ],
     "main": "./out/extension.js",
+    "activationEvents": [
+        "onLanguage:compact"
+    ],
     "contributes": {
         "languages": [
             {
@@ -68,8 +71,9 @@
         }
     },
     "scripts": {
-        "vscode:prepublish": "bun run compile && bun run build:server",
+        "vscode:prepublish": "bun run bundle",
         "compile": "tsc -p ./",
+        "bundle": "bun run scripts/bundle.js",
         "watch": "tsc -watch -p ./",
         "pretest": "bun run compile && bun run lint",
         "lint": "biome check .",
@@ -86,7 +90,8 @@
     "devDependencies": {
         "@biomejs/biome": "latest",
         "@types/node": "^25.0.3",
-        "@types/vscode": "^1.107.0",
+        "@types/vscode": "^1.60.0",
+        "esbuild": "^0.27.2",
         "typescript": "^5.9.3"
     },
     "dependencies": {

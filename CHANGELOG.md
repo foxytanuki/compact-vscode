@@ -24,4 +24,3 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Automatic LSP server detection (bundled, development, common paths, PATH)
 - Configuration options: `compact.lsp.path` and `compact.lsp.trace`
 - Command: `compact.restartLanguageServer`
-

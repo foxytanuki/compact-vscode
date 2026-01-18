@@ -132,14 +132,14 @@ async function main() {
                     } catch (error) {
                         throw new Error(
                             `Failed to initialize submodules: ${error.message}\n` +
-                            "Please run manually: git submodule update --init --recursive"
+                                "Please run manually: git submodule update --init --recursive"
                         );
                     }
                     // Verify submodule was initialized
                     if (!fs.existsSync(path.join(lspDir, "Cargo.toml"))) {
                         throw new Error(
                             "compact-lsp submodule initialization failed. Cargo.toml not found.\n" +
-                            "Please run manually: git submodule update --init --recursive"
+                                "Please run manually: git submodule update --init --recursive"
                         );
                     }
                 }
