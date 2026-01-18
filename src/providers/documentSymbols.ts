@@ -1,5 +1,5 @@
 import * as vscode from "vscode";
-import type { SyntaxNode } from "web-tree-sitter";
+import type * as TreeSitter from "web-tree-sitter";
 import { getOrParseDocument } from "../parser";
 
 // Map node types to VSCode symbol kinds
@@ -16,16 +16,20 @@ const nodeTypeToSymbolKind: Record<string, vscode.SymbolKind> = {
 	ecdecl_circuit: vscode.SymbolKind.Method,
 };
 
-function getSymbolName(node: SyntaxNode): string | null {
-	// Try common name field patterns
+function getSymbolName(node: TreeSitter.Node): string | null {
+	// For constructor, return "constructor"
+	if (node.type === "lconstructor") {
+		return "constructor";
+	}
+
+	// Try common name field patterns based on node type
+	// cdefn uses field("id", $.function_name)
+	// ldecl uses field("name", $.id)
+	// struct uses field("name", $.struct_name)
+	// enumdef uses field("name", $.enum_name)
 	const nameFields = [
-		"name",
-		"function_name",
-		"struct_name",
-		"enum_name",
-		"contract_name",
-		"module_name",
-		"id",
+		"name",  // ldecl, struct, enumdef, mdefn
+		"id",    // cdefn, edecl, wdecl
 	];
 
 	for (const fieldName of nameFields) {
@@ -35,16 +39,11 @@ function getSymbolName(node: SyntaxNode): string | null {
 		}
 	}
 
-	// For constructor, return "constructor"
-	if (node.type === "lconstructor") {
-		return "constructor";
-	}
-
 	return null;
 }
 
 function createDocumentSymbol(
-	node: SyntaxNode,
+	node: TreeSitter.Node,
 	document: vscode.TextDocument,
 	children: vscode.DocumentSymbol[] = []
 ): vscode.DocumentSymbol | null {
@@ -69,11 +68,7 @@ function createDocumentSymbol(
 	let selectionRange = range;
 	const nameNode =
 		node.childForFieldName("name") ||
-		node.childForFieldName("function_name") ||
-		node.childForFieldName("struct_name") ||
-		node.childForFieldName("enum_name") ||
-		node.childForFieldName("contract_name") ||
-		node.childForFieldName("module_name");
+		node.childForFieldName("id");
 
 	if (nameNode) {
 		selectionRange = new vscode.Range(
@@ -97,7 +92,7 @@ function createDocumentSymbol(
 }
 
 function collectSymbols(
-	node: SyntaxNode,
+	node: TreeSitter.Node,
 	document: vscode.TextDocument
 ): vscode.DocumentSymbol[] {
 	const symbols: vscode.DocumentSymbol[] = [];
@@ -138,9 +133,17 @@ export class CompactDocumentSymbolProvider
 	): vscode.ProviderResult<vscode.DocumentSymbol[]> {
 		const tree = getOrParseDocument(document);
 		if (!tree) {
+			console.log("[CompactDocumentSymbolProvider] No tree available");
 			return [];
 		}
 
-		return collectSymbols(tree.rootNode, document);
+		// Debug: log top-level node types
+		console.log("[CompactDocumentSymbolProvider] Root node type:", tree.rootNode.type);
+		console.log("[CompactDocumentSymbolProvider] Children types:",
+			tree.rootNode.children.map(c => c.type).join(", "));
+
+		const symbols = collectSymbols(tree.rootNode, document);
+		console.log("[CompactDocumentSymbolProvider] Found symbols:", symbols.length);
+		return symbols;
 	}
 }

@@ -70,6 +70,6 @@
         "typescript": "^5.9.3"
     },
     "dependencies": {
-        "web-tree-sitter": "^0.24.7"
+        "web-tree-sitter": "^0.26.3"
     }
 }

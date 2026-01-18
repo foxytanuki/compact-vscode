@@ -1,5 +1,5 @@
 import * as vscode from "vscode";
-import type { SyntaxNode } from "web-tree-sitter";
+import type * as TreeSitter from "web-tree-sitter";
 import { getOrParseDocument } from "../parser";
 
 // Node types that should be foldable
@@ -16,7 +16,7 @@ const foldableNodeTypes = new Set([
 ]);
 
 function collectFoldingRanges(
-	node: SyntaxNode,
+	node: TreeSitter.Node,
 	ranges: vscode.FoldingRange[]
 ): void {
 	// Check if this node type is foldable

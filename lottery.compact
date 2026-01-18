@@ -1,0 +1,46 @@
+// lottery.compact
+
+pragma language_version >= 0.18.0;
+
+export ledger participantCount: Uint<64>;
+export ledger winnerNumber: Uint<64>;
+export ledger isDrawn: Boolean;
+export ledger isOpen: Boolean;
+
+constructor() {
+  participantCount = 0 as Uint<64>;
+  winnerNumber = 0 as Uint<64>;
+  isDrawn = false;
+  isOpen = true;
+}
+
+export circuit enter(): [] {
+  assert(isOpen, "lottery is closed");
+  assert(!isDrawn, "already drawn");
+  participantCount = (participantCount + 1) as Uint<64>;
+}
+
+export circuit close_entry(): [] {
+  isOpen = false;
+}
+
+export circuit draw(): [] {
+  assert(!isOpen, "entry is still open");
+  assert(!isDrawn, "already drawn");
+  assert(participantCount > 0, "no participants");
+  winnerNumber = 1 as Uint<64>;
+  isDrawn = true;
+}
+
+export circuit get_participant_count(): Uint<64> {
+  return participantCount;
+}
+
+export circuit get_winner(): Uint<64> {
+  assert(isDrawn, "not drawn yet");
+  return winnerNumber;
+}
+
+export circuit is_drawn(): Boolean {
+  return isDrawn;
+}

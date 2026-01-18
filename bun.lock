@@ -5,7 +5,7 @@
     "": {
       "name": "compact-vscode",
       "dependencies": {
-        "web-tree-sitter": "^0.24.7",
+        "web-tree-sitter": "^0.26.3",
       },
       "devDependencies": {
         "@biomejs/biome": "latest",
@@ -97,6 +97,6 @@
 
     "undici-types": ["undici-types@7.16.0", "", {}, "sha512-Zz+aZWSj8LE6zoxD+xrjh4VfkIG8Ya6LvYkZqtUQGJPZjYl53ypCaUwWqo7eI0x66KBGeRo+mlBEkMSeSZ38Nw=="],
 
-    "web-tree-sitter": ["web-tree-sitter@0.24.7", "", {}, "sha512-CdC/TqVFbXqR+C51v38hv6wOPatKEUGxa39scAeFSm98wIhZxAYonhRQPSMmfZ2w7JDI0zQDdzdmgtNk06/krQ=="],
+    "web-tree-sitter": ["web-tree-sitter@0.26.3", "", {}, "sha512-JIVgIKFS1w6lejxSntCtsS/QsE/ecTS00en809cMxMPxaor6MvUnQ+ovG8uTTTvQCFosSh4MeDdI5bSGw5SoBw=="],
   }
 }

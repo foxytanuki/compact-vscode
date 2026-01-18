@@ -2,10 +2,6 @@ import * as vscode from "vscode";
 import { clearCache, initializeParser, invalidateCache } from "./parser";
 import { CompactDocumentSymbolProvider } from "./providers/documentSymbols";
 import { CompactFoldingRangeProvider } from "./providers/foldingRanges";
-import {
-	CompactSemanticTokensProvider,
-	legend,
-} from "./providers/semanticTokens";
 
 const COMPACT_LANGUAGE_ID = "compact";
 
@@ -13,22 +9,16 @@ export async function activate(
 	context: vscode.ExtensionContext
 ): Promise<void> {
 	try {
+		console.log("[Compact] Activating extension...");
+
 		// Initialize tree-sitter parser
 		await initializeParser(context);
+		console.log("[Compact] Parser initialized");
 
 		const documentSelector: vscode.DocumentSelector = {
 			language: COMPACT_LANGUAGE_ID,
 			scheme: "file",
 		};
-
-		// Register semantic tokens provider
-		context.subscriptions.push(
-			vscode.languages.registerDocumentSemanticTokensProvider(
-				documentSelector,
-				new CompactSemanticTokensProvider(),
-				legend
-			)
-		);
 
 		// Register document symbol provider
 		context.subscriptions.push(
@@ -64,8 +54,9 @@ export async function activate(
 			})
 		);
 
-		console.log("Compact Language Support activated");
+		console.log("[Compact] Extension activated successfully");
 	} catch (error) {
+		console.error("[Compact] Activation failed:", error);
 		vscode.window.showErrorMessage(
 			`Failed to initialize Compact Language Support: ${error}`
 		);
