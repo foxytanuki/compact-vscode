@@ -1,5 +1,5 @@
 import * as path from "node:path";
-import * as vscode from "vscode";
+import type * as vscode from "vscode";
 import * as TreeSitter from "web-tree-sitter";
 
 let parserInstance: TreeSitter.Parser | null = null;
@@ -58,6 +58,11 @@ export function getOrParseDocument(document: vscode.TextDocument): TreeSitter.Tr
 		return cached.tree;
 	}
 
+	// Delete old tree to free WASM memory
+	if (cached) {
+		cached.tree.delete();
+	}
+
 	const tree = parseDocument(document);
 	if (tree) {
 		treeCache.set(uri, { version: document.version, tree });
@@ -67,9 +72,16 @@ export function getOrParseDocument(document: vscode.TextDocument): TreeSitter.Tr
 }
 
 export function invalidateCache(uri: string): void {
+	const cached = treeCache.get(uri);
+	if (cached) {
+		cached.tree.delete();
+	}
 	treeCache.delete(uri);
 }
 
 export function clearCache(): void {
+	for (const cached of treeCache.values()) {
+		cached.tree.delete();
+	}
 	treeCache.clear();
 }
