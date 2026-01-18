@@ -2,7 +2,7 @@
     "name": "compact-vscode",
     "displayName": "Compact Language Support",
     "description": "Language support for Compact smart contract language (Midnight network)",
-    "version": "0.1.0",
+    "version": "0.2.0",
     "publisher": "foxytanuki",
     "repository": {
         "type": "git",
@@ -47,28 +47,7 @@
                 "scopeName": "source.compact",
                 "path": "./syntaxes/compact.tmLanguage.json"
             }
-        ],
-        "configuration": {
-            "type": "object",
-            "title": "Compact Language",
-            "properties": {
-                "compact.lsp.path": {
-                    "type": "string",
-                    "default": "",
-                    "description": "Path to the compact-lsp binary. If empty, the extension will try to find it automatically."
-                },
-                "compact.lsp.trace": {
-                    "type": "string",
-                    "enum": [
-                        "off",
-                        "messages",
-                        "verbose"
-                    ],
-                    "default": "off",
-                    "description": "Traces the communication between VS Code and the language server."
-                }
-            }
-        }
+        ]
     },
     "scripts": {
         "vscode:prepublish": "bun run bundle",
@@ -80,11 +59,7 @@
         "lint:fix": "biome check --write .",
         "format": "biome format --write .",
         "test": "bun run ./out/test/runTest.js",
-        "build:server": "node scripts/build-server.js",
-        "build:server:linux": "cd submodules/compact-lsp && cargo build --release && cp target/release/compact-lsp ../server/linux/compact-lsp",
-        "build:server:darwin": "cd submodules/compact-lsp && cargo build --release && cp target/release/compact-lsp ../server/darwin/compact-lsp",
-        "build:server:win32": "cd submodules/compact-lsp && cargo build --release && cp target/release/compact-lsp.exe ../server/win32/compact-lsp.exe",
-        "dev:setup": "git submodule update --init --recursive && bun run compile && node scripts/download-lsp.js",
+        "dev:setup": "git submodule update --init --recursive && bun run compile",
         "dev:test": "bun run dev:setup && code --extensionDevelopmentPath=$(pwd)"
     },
     "devDependencies": {
@@ -95,6 +70,6 @@
         "typescript": "^5.9.3"
     },
     "dependencies": {
-        "vscode-languageclient": "^9.0.1"
+        "web-tree-sitter": "^0.26.3"
     }
 }

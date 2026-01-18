@@ -143,8 +143,28 @@
                     ]
                 },
                 {
+                    "name": "keyword.control.import.compact",
+                    "match": "\\b(import|export)\\b"
+                },
+                {
+                    "name": "keyword.other.compact",
+                    "match": "\\b(module|contract|struct|enum)\\b"
+                },
+                {
+                    "name": "entity.name.function.compact",
+                    "match": "\\b(circuit|witness|constructor)\\b"
+                },
+                {
+                    "name": "storage.type.compact",
+                    "match": "\\bledger\\b"
+                },
+                {
                     "name": "keyword.control.compact",
-                    "match": "\\b(import|export|module|ledger|circuit|witness|contract|struct|enum|constructor|assert|const|default|map|fold|disclose|pad|prefix|as)\\b"
+                    "match": "\\b(assert|const|default|map|fold|disclose|pad|prefix)\\b"
+                },
+                {
+                    "name": "keyword.operator.word.compact",
+                    "match": "\\bas\\b"
                 },
                 {
                     "name": "keyword.control.conditional.compact",

@@ -5,6 +5,23 @@ All notable changes to this extension will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.2.0] - 2026-01-18
+
+### Changed
+
+- Replaced LSP server with tree-sitter parser (web-tree-sitter) for improved performance and reduced bundle size
+- Removed bundled LSP server binaries (no longer requires platform-specific binaries)
+
+### Added
+
+- Tree-sitter based syntax highlighting
+- Document symbols provider using tree-sitter AST
+
+### Removed
+
+- LSP server integration and related configuration options (`compact.lsp.path`, `compact.lsp.trace`)
+- `compact.restartLanguageServer` command
+
 ## [0.1.1] - 2025-12-22
 
 ### Fixed

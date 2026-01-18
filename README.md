@@ -5,10 +5,9 @@ Language support for the [Compact](https://docs.midnight.network/develop/referen
 > **Note:** This extension is currently under active development. Pull requests and issues are welcome!
 ## Features
 
-- Full LSP support via [compact-lsp](https://github.com/1NickPappas/compact-lsp)
-  - Syntax highlighting, diagnostics, code completion
-  - Go to definition, find references, hover documentation
-  - Code formatting and folding
+- **Syntax highlighting** for Compact language files with Tree-sitter grammar
+- **Document symbols** - Navigate to modules, circuits, structs, enums, contracts, and functions
+- **Code folding** - Fold modules, circuits, structs, enums, contracts, and code blocks
 - Editor integration for `.compact` files
 
 ## Installation
@@ -42,25 +41,18 @@ Or via UI:
 
 Coming soon - the extension will be available on the VS Code Marketplace.
 
-The extension includes pre-built LSP server binaries for all platforms. No manual installation required.
+The extension includes the Tree-sitter grammar for syntax highlighting. No additional installation required.
 
 ## Configuration
 
-Optional: Set custom LSP server path:
-
-```json
-{
-  "compact.lsp.path": "/path/to/compact-lsp"
-}
-```
+No configuration required. The extension works out of the box for `.compact` files.
 
 ## Development
 
 ### Prerequisites
 
-- [mise](https://mise.jdx.dev/) (recommended) - Run `mise install` to set up Node.js and Rust
-- [Bun](https://bun.sh/)
-- [Rust](https://rustup.rs/)
+- [mise](https://mise.jdx.dev/) (recommended) - Run `mise install` to set up Node.js
+- [Bun](https://bun.sh/) - JavaScript runtime and package manager
 
 ### Setup
 
@@ -74,7 +66,7 @@ git submodule update --init --recursive
 
 # Install dependencies and setup
 bun install
-bun run dev:setup  # Initializes submodules, downloads compact-lsp, and compiles extension
+bun run dev:setup  # Initializes submodules and compiles extension
 ```
 
 Press `F5` in VS Code to start debugging.
@@ -82,12 +74,12 @@ Press `F5` in VS Code to start debugging.
 ### Building
 
 ```bash
-bun run compile
-bun run build:server  # Build LSP server binaries
-vsce package --no-dependencies
+bun run compile  # Compile TypeScript
+bun run bundle    # Bundle the extension
+vsce package      # Create VSIX package
 ```
 
-**Note:** The `--no-dependencies` flag is required when using Bun, as `vsce` expects npm's dependency structure.
+**Note:** Use `vsce package --no-dependencies` when using Bun, as `vsce` expects npm's dependency structure.
 ## Related Projects
 
 - [compact-lsp](https://github.com/1NickPappas/compact-lsp) - Language Server Protocol implementation
