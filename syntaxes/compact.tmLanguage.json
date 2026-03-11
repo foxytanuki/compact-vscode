@@ -100,21 +100,6 @@
                             "match": "\\\\."
                         }
                     ]
-                },
-                {
-                    "name": "string.quoted.other.compact",
-                    "begin": "<",
-                    "end": ">",
-                    "beginCaptures": {
-                        "0": {
-                            "name": "punctuation.definition.string.begin.compact"
-                        }
-                    },
-                    "endCaptures": {
-                        "0": {
-                            "name": "punctuation.definition.string.end.compact"
-                        }
-                    }
                 }
             ]
         },
@@ -192,11 +177,11 @@
             "patterns": [
                 {
                     "name": "storage.type.builtin.compact",
-                    "match": "\\b(Boolean|Field|Bytes|Opaque|Vector)\\b"
+                    "match": "\\b(Boolean|Field)\\b"
                 },
                 {
                     "name": "storage.type.builtin.compact",
-                    "begin": "\\bUint\\b",
+                    "begin": "\\b(Uint|Bytes|Opaque|Vector)\\b",
                     "end": "(?=\\s|;|,|\\)|\\]|\\}|$|\\n)",
                     "beginCaptures": {
                         "0": {
