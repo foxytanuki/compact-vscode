@@ -14,7 +14,6 @@ scripts/**
 .github/**
 dist/**
 node_modules/**
-!node_modules/web-tree-sitter/**
 out/test/**
 *.vsix
 biome.json
@@ -22,4 +21,3 @@ bun.lock
 mise.toml
 bin/**
 out/*.compact
-
