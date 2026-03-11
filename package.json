@@ -23,7 +23,6 @@
         "blockchain",
         "vscode-extension"
     ],
-    "main": "./out/extension.js",
     "contributes": {
         "languages": [
             {
