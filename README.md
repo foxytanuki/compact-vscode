@@ -1,8 +1,13 @@
 # Compact Language Support for VS Code
 
+This project extends the Midnight Network with additional developer tooling.
+
 Language support for the [Compact](https://docs.midnight.network/develop/reference/compact/lang-ref) smart contract language (Midnight network).
 
 > **Note:** This extension is currently under active development. Pull requests and issues are welcome!
+
+This extension does not connect directly to a Midnight network. Its compatibility target is the Compact language and toolchain used for Midnight Preprod-era development.
+
 ## Features
 
 - **Syntax highlighting** for Compact language files with Tree-sitter grammar
@@ -83,7 +88,7 @@ vsce package      # Create VSIX package
 ## Related Projects
 
 - [compact-lsp](https://github.com/1NickPappas/compact-lsp) - Language Server Protocol implementation
-- [compact-tree-sitter](https://github.com/midnightntwrk/compact-tree-sitter) - Tree-sitter grammar for Compact
+- [compact-tree-sitter](https://github.com/foxytanuki/compact-tree-sitter) - Tree-sitter grammar fork currently bundled by this extension
 - [compact.vim](https://github.com/1NickPappas/compact.vim) - Vim/Neovim support
 
 ## License
