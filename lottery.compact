@@ -1,44 +1,118 @@
 // lottery.compact
 
-pragma language_version >= 0.18.0;
+pragma language_version >= 0.21.0;
 
-export ledger participantCount: Uint<64>;
-export ledger winnerNumber: Uint<64>;
-export ledger isDrawn: Boolean;
-export ledger isOpen: Boolean;
+import { CoinInfo as LotteryCoinInfo, nativePointX as lotteryPointX } from CompactStandardLibrary prefix CSL$;
 
-constructor() {
-  participantCount = 0 as Uint<64>;
-  winnerNumber = 0 as Uint<64>;
-  isDrawn = false;
-  isOpen = true;
+type TicketCount = Uint<64>;
+type WinnerIndex = Uint<64>;
+type LotteryLabel = Bytes<32>;
+new type LotteryId = Bytes<32>;
+new type TicketCode = Bytes<16>;
+
+struct LotteryConfig {
+  id: LotteryId,
+  label: LotteryLabel,
+  ticketPrice: Uint<64>,
 }
 
-export circuit enter(): [] {
+struct LotteryStatus {
+  isOpen: Boolean,
+  isDrawn: Boolean,
+  note: LotteryLabel,
+}
+
+export ledger participantCount: TicketCount;
+export ledger winnerNumber: WinnerIndex;
+export ledger isDrawn: Boolean;
+export ledger isOpen: Boolean;
+export ledger activeLotteryId: LotteryId;
+export ledger lastTicketCode: TicketCode;
+export ledger currentConfig: LotteryConfig;
+export ledger currentStatus: LotteryStatus;
+
+constructor() {
+  participantCount = 0 as TicketCount;
+  winnerNumber = 0 as WinnerIndex;
+  isDrawn = false;
+  isOpen = true;
+  activeLotteryId = default<LotteryId>;
+  lastTicketCode = default<TicketCode>;
+  currentConfig = LotteryConfig {
+    id: default<LotteryId>,
+    label: default<LotteryLabel>,
+    ticketPrice: 1 as Uint<64>,
+  };
+  currentStatus = LotteryStatus {
+    isOpen: true,
+    isDrawn: false,
+    note: default<LotteryLabel>,
+  };
+}
+
+export circuit enter(ticketCode: TicketCode): [] {
   assert(isOpen, "lottery is closed");
   assert(!isDrawn, "already drawn");
-  participantCount = (participantCount + 1) as Uint<64>;
+  participantCount = (participantCount + 1) as TicketCount;
+  lastTicketCode = ticketCode;
+  currentStatus = LotteryStatus {
+    isOpen: isOpen,
+    isDrawn: isDrawn,
+    note: default<LotteryLabel>,
+  };
+  return [];
 }
 
 export circuit close_entry(): [] {
   isOpen = false;
+  currentStatus = LotteryStatus {
+    isOpen: false,
+    isDrawn: isDrawn,
+    note: default<LotteryLabel>,
+  };
+  return [];
 }
 
-export circuit draw(): [] {
+export circuit draw(seed: WinnerIndex): [] {
   assert(!isOpen, "entry is still open");
   assert(!isDrawn, "already drawn");
   assert(participantCount > 0, "no participants");
-  winnerNumber = 1 as Uint<64>;
+  winnerNumber = (seed + 1 as WinnerIndex) as WinnerIndex;
   isDrawn = true;
+  currentStatus = LotteryStatus {
+    isOpen: false,
+    isDrawn: true,
+    note: default<LotteryLabel>,
+  };
+  return [];
 }
 
-export circuit get_participant_count(): Uint<64> {
+export circuit reset(config: LotteryConfig, id: LotteryId): [] {
+  participantCount = 0 as TicketCount;
+  winnerNumber = 0 as WinnerIndex;
+  isDrawn = false;
+  isOpen = true;
+  activeLotteryId = id;
+  currentConfig = config;
+  currentStatus = LotteryStatus {
+    isOpen: true,
+    isDrawn: false,
+    note: config.label,
+  };
+  return [];
+}
+
+export circuit get_participant_count(): TicketCount {
   return participantCount;
 }
 
-export circuit get_winner(): Uint<64> {
+export circuit get_winner(): WinnerIndex {
   assert(isDrawn, "not drawn yet");
   return winnerNumber;
+}
+
+export circuit get_status(): LotteryStatus {
+  return currentStatus;
 }
 
 export circuit is_drawn(): Boolean {
