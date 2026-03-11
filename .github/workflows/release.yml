@@ -5,9 +5,6 @@ on:
         tags:
             - "v*"
 
-env:
-    FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: "true"
-
 permissions:
     contents: write
 
@@ -20,9 +17,10 @@ jobs:
               with:
                   submodules: recursive
 
-            - uses: oven-sh/setup-bun@v2
-              with:
-                  bun-version: latest
+            - name: Install Bun
+              run: |
+                  curl -fsSL https://bun.sh/install | bash
+                  echo "$HOME/.bun/bin" >> "$GITHUB_PATH"
 
             - name: Install dependencies
               run: bun install
