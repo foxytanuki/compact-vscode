@@ -10,19 +10,8 @@ permissions:
 
 jobs:
     build:
-        name: Build (${{ matrix.platform }})
-        runs-on: ${{ matrix.os }}
-        strategy:
-            matrix:
-                include:
-                    - os: ubuntu-latest
-                      platform: linux
-                    - os: macos-latest
-                      platform: darwin
-                    - os: macos-latest
-                      platform: darwin-arm64
-                    - os: windows-latest
-                      platform: win32
+        name: Build Release Artifact
+        runs-on: ubuntu-latest
         steps:
             - uses: actions/checkout@v6
               with:
@@ -44,37 +33,29 @@ jobs:
             - name: Install vsce
               run: npm install -g @vscode/vsce
 
-            - name: Create dist directory
-              run: mkdir -p dist
-
             - name: Package extension
-              run: vsce package --out dist/compact-vscode-${{ matrix.platform }}.vsix
+              run: vsce package --no-dependencies --out compact-vscode.vsix
 
             - name: Upload artifact
               uses: actions/upload-artifact@v6
               with:
-                  name: extension-${{ matrix.platform }}
-                  path: dist/*.vsix
+                  name: extension
+                  path: compact-vscode.vsix
 
     release:
         name: Create Release
         needs: build
         runs-on: ubuntu-latest
         steps:
-            - uses: actions/checkout@v6
-
-            - name: Download artifacts
-              uses: actions/download-artifact@v6
+            - uses: actions/download-artifact@v6
               with:
-                  pattern: extension-*
+                  name: extension
                   path: artifacts
-                  merge-multiple: true
 
             - name: Create Release
               uses: softprops/action-gh-release@v1
               with:
-                  files: artifacts/**/*
+                  files: artifacts/compact-vscode.vsix
                   generate_release_notes: true
               env:
                   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-

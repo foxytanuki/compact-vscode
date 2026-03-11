@@ -7,8 +7,8 @@ on:
         branches: [main, develop]
 
 jobs:
-    lint-and-compile:
-        name: Lint and Compile
+    validate:
+        name: Validate Extension
         runs-on: ubuntu-latest
         steps:
             - uses: actions/checkout@v6
@@ -25,35 +25,6 @@ jobs:
             - name: Lint
               run: bun run lint
 
-            - name: Compile
-              run: bun run compile
-
-    build-and-package:
-        name: Build and Package
-        runs-on: ${{ matrix.os }}
-        strategy:
-            matrix:
-                include:
-                    - os: ubuntu-latest
-                      platform: linux
-                    - os: macos-latest
-                      platform: darwin
-                    - os: macos-latest
-                      platform: darwin-arm64
-                    - os: windows-latest
-                      platform: win32
-        steps:
-            - uses: actions/checkout@v6
-              with:
-                  submodules: recursive
-
-            - uses: oven-sh/setup-bun@v2
-              with:
-                  bun-version: latest
-
-            - name: Install dependencies
-              run: bun install
-
             - name: Compile TypeScript
               run: bun run compile
 
@@ -63,15 +34,11 @@ jobs:
             - name: Install vsce
               run: npm install -g @vscode/vsce
 
-            - name: Create dist directory
-              run: mkdir -p dist
-
             - name: Package extension
-              run: vsce package --out dist/compact-vscode-${{ runner.os }}-${{ github.sha }}.vsix
+              run: vsce package --no-dependencies --out compact-vscode.vsix
 
             - name: Upload artifact
               uses: actions/upload-artifact@v6
               with:
-                  name: extension-${{ matrix.platform }}
-                  path: dist/*.vsix
-
+                  name: extension
+                  path: compact-vscode.vsix

@@ -18,31 +18,23 @@ This extension does not connect directly to a Midnight network. It focuses on Co
 ### From GitHub Releases (Recommended)
 
 1. Go to [Releases](https://github.com/foxytanuki/compact-vscode/releases)
-2. Download the VSIX file for your platform:
-   - `compact-vscode-linux.vsix` - Linux (x86_64)
-   - `compact-vscode-darwin.vsix` - macOS (Intel)
-   - `compact-vscode-darwin-arm64.vsix` - macOS (Apple Silicon)
-   - `compact-vscode-win32.vsix` - Windows (x86_64)
+2. Download the latest `compact-vscode.vsix` artifact
 3. Install the extension:
 
 **VS Code:**
 ```bash
-code --install-extension compact-vscode-<platform>.vsix
+code --install-extension compact-vscode.vsix
 ```
 
 **Cursor:**
 ```bash
-cursor --install-extension compact-vscode-<platform>.vsix
+cursor --install-extension compact-vscode.vsix
 ```
 
 Or via UI:
 - Open Extensions view (`Ctrl+Shift+X` / `Cmd+Shift+X`)
 - Click `...` menu → "Install from VSIX..."
 - Select the downloaded VSIX file
-
-### From VS Code Marketplace
-
-Coming soon - the extension will be available on the VS Code Marketplace.
 
 The extension includes a bundled TextMate grammar for syntax highlighting. No additional installation required.
 
@@ -75,11 +67,9 @@ Press `F5` in VS Code to start debugging.
 
 ```bash
 bun run compile  # Compile TypeScript
-bun run bundle    # Bundle the extension
-vsce package      # Create VSIX package
+bun run bundle   # Bundle the extension
+vsce package --no-dependencies  # Create VSIX package
 ```
-
-**Note:** Use `vsce package --no-dependencies` when using Bun, as `vsce` expects npm's dependency structure.
 
 ## Related Projects
 

@@ -12,6 +12,8 @@ vsc-extension-quickstart.md
 submodules/**
 scripts/**
 .github/**
+server/**
+lottery.compact
 dist/**
 node_modules/**
 out/test/**
