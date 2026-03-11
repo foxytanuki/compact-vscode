@@ -176,6 +176,18 @@
         "types": {
             "patterns": [
                 {
+                    "name": "entity.name.type.compact",
+                    "match": "(?<=\\btype\\s)([A-Z][a-zA-Z0-9_]*|[a-z][a-zA-Z0-9_]*)\\b"
+                },
+                {
+                    "name": "entity.name.type.compact",
+                    "match": "(?<=\\bnew\\s+type\\s)([A-Z][a-zA-Z0-9_]*|[a-z][a-zA-Z0-9_]*)\\b"
+                },
+                {
+                    "name": "entity.name.type.compact",
+                    "match": "(?<=\\b(struct|enum|contract|module)\\s)([A-Z][a-zA-Z0-9_]*)\\b"
+                },
+                {
                     "name": "storage.type.builtin.compact",
                     "match": "\\b(Boolean|Field)\\b"
                 },
