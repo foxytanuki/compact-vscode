@@ -6,10 +6,13 @@ on:
     pull_request:
         branches: [main, develop]
 
+env:
+    FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: "true"
+
 jobs:
     validate:
         name: Validate Extension
-        runs-on: ubuntu-latest
+        runs-on: ubuntu-24.04
         steps:
             - uses: actions/checkout@v6
               with:

@@ -5,13 +5,16 @@ on:
         tags:
             - "v*"
 
+env:
+    FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: "true"
+
 permissions:
     contents: write
 
 jobs:
     build:
         name: Build Release Artifact
-        runs-on: ubuntu-latest
+        runs-on: ubuntu-24.04
         steps:
             - uses: actions/checkout@v6
               with:
@@ -45,7 +48,7 @@ jobs:
     release:
         name: Create Release
         needs: build
-        runs-on: ubuntu-latest
+        runs-on: ubuntu-24.04
         steps:
             - uses: actions/download-artifact@v6
               with:
