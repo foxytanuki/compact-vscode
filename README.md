@@ -1,18 +1,16 @@
-# Compact Language Support for VS Code
+# Compact Syntax Highlighting for VS Code
 
 This project extends the Midnight Network with additional developer tooling.
 
-Language support for the [Compact](https://docs.midnight.network/develop/reference/compact/lang-ref) smart contract language (Midnight network).
+Syntax highlighting for the [Compact](https://docs.midnight.network/develop/reference/compact/lang-ref) smart contract language (Midnight network).
 
 > **Note:** This extension is currently under active development. Pull requests and issues are welcome!
 
-This extension does not connect directly to a Midnight network. Its compatibility target is the Compact language and toolchain used for Midnight Preprod-era development.
+This extension does not connect directly to a Midnight network. It focuses on Compact syntax highlighting and tracks the language/toolchain used for Midnight Preprod-era development.
 
 ## Features
 
-- **Syntax highlighting** for Compact language files with Tree-sitter grammar
-- **Document symbols** - Navigate to modules, circuits, structs, enums, contracts, and functions
-- **Code folding** - Fold modules, circuits, structs, enums, contracts, and code blocks
+- **Syntax highlighting** for Compact language files
 - Editor integration for `.compact` files
 
 ## Installation
@@ -46,7 +44,7 @@ Or via UI:
 
 Coming soon - the extension will be available on the VS Code Marketplace.
 
-The extension includes the Tree-sitter grammar for syntax highlighting. No additional installation required.
+The extension includes a bundled TextMate grammar for syntax highlighting. No additional installation required.
 
 ## Configuration
 
@@ -62,16 +60,13 @@ No configuration required. The extension works out of the box for `.compact` fil
 ### Setup
 
 ```bash
-# Clone with submodules (recommended)
-git clone --recursive https://github.com/foxytanuki/compact-vscode.git
+# Clone repository
+git clone https://github.com/foxytanuki/compact-vscode.git
 cd compact-vscode
-
-# Or if already cloned, initialize submodules
-git submodule update --init --recursive
 
 # Install dependencies and setup
 bun install
-bun run dev:setup  # Initializes submodules and compiles extension
+bun run dev:setup  # Compiles extension
 ```
 
 Press `F5` in VS Code to start debugging.
@@ -85,10 +80,9 @@ vsce package      # Create VSIX package
 ```
 
 **Note:** Use `vsce package --no-dependencies` when using Bun, as `vsce` expects npm's dependency structure.
+
 ## Related Projects
 
-- [compact-lsp](https://github.com/1NickPappas/compact-lsp) - Language Server Protocol implementation
-- [compact-tree-sitter](https://github.com/foxytanuki/compact-tree-sitter) - Tree-sitter grammar fork currently bundled by this extension
 - [compact.vim](https://github.com/1NickPappas/compact.vim) - Vim/Neovim support
 
 ## License

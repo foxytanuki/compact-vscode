@@ -6,7 +6,7 @@ async function bundle() {
             entryPoints: ["src/extension.ts"],
             bundle: true,
             outfile: "out/extension.js",
-            external: ["vscode", "web-tree-sitter"],
+            external: ["vscode"],
             format: "cjs",
             platform: "node",
             target: "node20",

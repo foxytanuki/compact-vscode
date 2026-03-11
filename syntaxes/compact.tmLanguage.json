@@ -144,11 +144,11 @@
                 },
                 {
                     "name": "keyword.control.import.compact",
-                    "match": "\\b(import|export)\\b"
+                    "match": "\\b(import|export|from)\\b"
                 },
                 {
                     "name": "keyword.other.compact",
-                    "match": "\\b(module|contract|struct|enum)\\b"
+                    "match": "\\b(module|contract|struct|enum|type)\\b"
                 },
                 {
                     "name": "entity.name.function.compact",
@@ -180,7 +180,7 @@
                 },
                 {
                     "name": "storage.modifier.compact",
-                    "match": "\\b(pure|sealed)\\b"
+                    "match": "\\b(new|pure|sealed)\\b"
                 },
                 {
                     "name": "keyword.operator.word.compact",

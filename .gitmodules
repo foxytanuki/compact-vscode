@@ -1,6 +1,3 @@
 [submodule "submodules/compact.vim"]
 	path = submodules/compact.vim
 	url = https://github.com/1NickPappas/compact.vim
-[submodule "submodules/compact-tree-sitter"]
-	path = submodules/compact-tree-sitter
-	url = https://github.com/foxytanuki/compact-tree-sitter
