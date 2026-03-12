@@ -9,7 +9,7 @@ async function bundle() {
             external: ["vscode"],
             format: "cjs",
             platform: "node",
-            target: "node20",
+            target: "node14",
             sourcemap: true,
             minify: false,
             keepNames: true,

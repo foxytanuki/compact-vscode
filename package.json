@@ -54,7 +54,7 @@
         "lint": "biome check .",
         "lint:fix": "biome check --write .",
         "format": "biome format --write .",
-        "test": "bun run ./out/test/runTest.js",
+        "test": "bun run scripts/test.js",
         "dev:setup": "bun run compile",
         "dev:test": "bun run dev:setup && code --extensionDevelopmentPath=$(pwd)"
     },
